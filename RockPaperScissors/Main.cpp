@@ -1,15 +1,19 @@
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
 int main()
 {
+	ofstream userFile;
 	string userName;
 	cout << "GREETINGS! WLC TO R-P-S Game" << endl;
 	cout << "Please Enter Your Username : ";
 	cin >> userName;
+	//userFile << userName; // write in file 
 
 	// 1. Search through files to find userName.txt
+	userFile.open(userName + ".txt", fstream::app);
 
 	// if exists, read 2 numbers : player wins AND computer wins
 	// if not exists, create one
