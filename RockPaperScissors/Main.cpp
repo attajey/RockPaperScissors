@@ -1,24 +1,49 @@
-#include <iostream>
-#include <fstream>
+#include <iostream> // input output operations
+#include <fstream> // file operations
+#include <stdlib.h>  // srand, rand
+#include <time.h>       /* time */
 
 using namespace std;
 
 int main()
 {
-	ofstream userFile;
+	fstream userFile;
 	string userName;
+	int playerWins;
+	int computerWins;
+	string gameOptions[] = { "Rock", "Paper", "Scissors" };
+	srand(time(NULL));
+
 	cout << "GREETINGS! WLC TO R-P-S Game" << endl;
 	cout << "Please Enter Your Username : ";
 	cin >> userName;
 	//userFile << userName; // write in file 
 
 	// 1. Search through files to find userName.txt
-	userFile.open(userName + ".txt", fstream::app);
-
+	userFile.open(userName + ".txt", ios::app);
+	if (userFile)
+	{
+		if (userFile.is_open())
+		{
+			
+		}
 	// if exists, read 2 numbers : player wins AND computer wins
+		userFile >> playerWins;
+		userFile >> computerWins;
+
+	}
+	else
+	{
 	// if not exists, create one
 
+	}
+
+
 	// 3. Computer randomly pick R-P-S
+	string computerRandomChoice = gameOptions[rand() % 3];
+	cout << computerRandomChoice;
+	
+
 
 	// 4. Ask user to choose 1=R - 2=P - 3=S
 
