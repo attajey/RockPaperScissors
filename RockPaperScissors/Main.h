@@ -1,8 +1,8 @@
 #pragma once
 
-void winnerCheck(std::string& computerRandomChoice, std::string& playerChoice, int& playerWins, bool& playerWinFlag, int& computerWins);
+void winnerCheck(string& computerRandomChoice, string& playerChoice, int& playerWins, int& computerWins, bool& playerWinFlag, bool& computerWinFlag);
 
-void findOrCreateUser(std::fstream& userFile, int& playerWins, int& computerWins);
+void findOrCreateUser(fstream& userFile, int& playerWins, int& computerWins, string& userName);
 
 void saveScore(std::fstream& userFile, std::string& userName, int playerWins, int computerWins);
 
