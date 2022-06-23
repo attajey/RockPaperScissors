@@ -67,6 +67,7 @@ void playerAnswer(int& playerChoiceIndex, string& playerChoice, string  gameOpti
 // 4. Determine the winner
 void winnerCheck(string& computerRandomChoice, string& playerChoice, int& playerWins, int& computerWins, bool& playerWinFlag, bool& computerWinFlag)
 {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (computerRandomChoice == "Rock")
 	{
 
@@ -151,11 +152,19 @@ void winnerCheck(string& computerRandomChoice, string& playerChoice, int& player
 	// setting flags for displaying final results
 	if (playerWinFlag)
 	{
-		cout << "\n\n$$$$$ YOU HAVE WON $$$$$ \nWe shall be victorious in despite of difficulties... \n\n" << endl;
+		SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE || BACKGROUND_RED);
+		cout << "\n\n$$$$$ YOU HAVE WON $$$$$ \nWe shall be victorious in despite of difficulties... \n" << endl;
+
+		SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+		cout << "SCORES ===> Player:" << playerWins << "  Computer:" << computerWins << " <=== SCORES\n\n" << endl;
 	}
 	else if (computerWinFlag)
 	{
-		cout << "\n\n>>>>>>>>>>   LOOSER   <<<<<<<<<< \nThis fight is not over...\n\n" << endl;
+		SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE || BACKGROUND_RED);
+		cout << "\n\n>>>>>>>>>>   LOOSER   <<<<<<<<<< \nThis fight is not over...\n" << endl;
+
+		SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+		cout << "SCORES ===> Player:" << playerWins << "  Computer:" << computerWins << " <=== SCORES\n\n" << endl;
 	}
 }
 
