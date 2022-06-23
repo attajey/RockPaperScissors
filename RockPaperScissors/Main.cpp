@@ -1,6 +1,6 @@
 #include <iostream> // input output operations
 #include <fstream> // file operations
-#include <stdlib.h>  // srand, rand
+#include <cstdlib>  // srand, rand
 #include <time.h>       /* time */
 
 using namespace std;
@@ -8,6 +8,9 @@ using namespace std;
 int main()
 {
 	fstream userFile;
+	
+	//FILE* playerFile;
+
 	string userName;
 	int playerWins = 0;
 	int computerWins = 0;
@@ -24,7 +27,10 @@ int main()
 	//userFile << userName; // write in file 
 
 	// 1. Search through files to find userName.txt
-	userFile.open(userName + ".txt", ios::in);
+	userFile.open(userName + ".txt", fstream::in);
+
+	//playerFile = fopen(strcat(userName, ".txt"), "rw");
+
 	if (userFile)
 	{
 		if (userFile.is_open())
@@ -44,6 +50,7 @@ int main()
 	{
 		// 3. Computer randomly pick R-P-S
 		string computerRandomChoice = gameOptions[rand() % 3];
+		cout << computerRandomChoice << "***********" << endl;
 
 		// 4. Ask user to choose 1=R - 2=P - 3=S
 		cout << "Please Choose One of the Following : 1=Rock  2=Paper  3=Scissors" << endl;
@@ -56,7 +63,7 @@ int main()
 			if (playerChoice == "Rock")
 			{
 				//Draw
-				continue;
+				cout << "DRAW ! Try Again..." << endl;
 
 			}
 			else if (playerChoice == "Paper")
@@ -84,7 +91,8 @@ int main()
 			else if (playerChoice == "Paper")
 			{
 				// Draw
-				continue;
+				cout << "DRAW ! Try Again..." << endl;
+
 			}
 			else if (playerChoice == "Scissors")
 			{
@@ -111,7 +119,8 @@ int main()
 			else if (playerChoice == "Scissors")
 			{
 				// Draw
-				continue;
+				cout << "DRAW ! Try Again..." << endl;
+
 			}
 		}
 
@@ -126,8 +135,9 @@ int main()
 		}
 
 		// 7. Keep track of "wins by the player" and "wins by the computer" 
-		userFile.open(userName + ".txt", ios::out);
+		userFile.open(userName + ".txt", fstream::out | fstream::trunc);
 		userFile << playerWins << " " << computerWins;
+		userFile.close();
 
 		// 8. Ask player if want to play again : Y - N 
 		cout << "Do you want to play again ? (0=Y / 1=N)" << endl;
@@ -137,7 +147,7 @@ int main()
 		if (endGame)
 		{
 			// 9. save in userName.txt
-			userFile.close();
+			//userFile.close();
 			// 10. Privide confirmation msg to player
 			cout << "Your Score was saved successfully. See ya soon ! " << endl;
 			// 11. End the game
