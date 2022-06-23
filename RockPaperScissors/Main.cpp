@@ -173,6 +173,29 @@ void farewell(int playerWins, int computerWins)
 }
 
 
+void repeatGame(std::string& playerAnsForGameEnd, int playerWins, int computerWins, int& retflag)
+{
+	retflag = 1;
+	cout << "Do you want to play again ? (Y/N)" << endl;
+	cin >> playerAnsForGameEnd;
+	if (playerAnsForGameEnd == "N" || playerAnsForGameEnd == "n")
+	{
+		//endGame = true;
+		farewell(playerWins, computerWins);
+		{ retflag = 2; return; };
+	}
+	else if (playerAnsForGameEnd == "Y" || playerAnsForGameEnd == "y")
+	{
+		//endGame = false;
+		{ retflag = 3; return; };
+	}
+	else
+	{
+		cin.clear();
+		throw InvalidInputException();
+	}
+}
+
 int main()
 {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); // to access terminal colors 
@@ -231,29 +254,17 @@ int main()
 		saveScore(userFile, userName, playerWins, computerWins);
 
 		// 8. Ask player if want to play again : Y - N 
-		cout << "Do you want to play again ? (Y/N)" << endl;
-		cin >> playerAnsForGameEnd;
-		if (playerAnsForGameEnd == "N" || playerAnsForGameEnd == "n")
+		try
 		{
-			//endGame = true;
-			farewell(playerWins, computerWins);
-			break;
+			int retflag;
+			repeatGame(playerAnsForGameEnd, playerWins, computerWins, retflag);
+			if (retflag == 2) break;
+			if (retflag == 3) continue;
 		}
-		else if (playerAnsForGameEnd == "Y" || playerAnsForGameEnd == "y")
+		catch (const InvalidInputException& ia)
 		{
-			//endGame = false;
-			continue;
+			cerr << "Exception Occurred: " << ia.what() << endl << endl;
 		}
-
-		// if N : continue to step 9
-		/* if (endGame)
-		{
-			// 9. save in userName.txt
-			// 10. Privide confirmation msg to player
-			farewell(playerWins, computerWins);
-			// 11. End the game
-			break;
-		}*/
 	} // if Y : Go to step 3
 
 	SetConsoleTextAttribute(hConsole, FOREGROUND_INTENSITY);

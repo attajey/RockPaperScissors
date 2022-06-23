@@ -8,4 +8,6 @@ void saveScore(std::fstream& userFile, std::string& userName, int playerWins, in
 
 void farewell(int playerWins, int computerWins);
 
+void repeatGame(std::string& playerAnsForGameEnd, int playerWins, int computerWins, int& retflag);
+
 void playerAnswer(int& playerChoiceIndex, std::string& playerChoice, std::string  gameOptions[3]);
