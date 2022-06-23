@@ -1,16 +1,17 @@
 #include <iostream>  // input output operations
 #include <fstream>   // file operations
 #include <cstdlib>   // srand, rand
+
 #include <time.h>    // time
 #include <stdio.h>   // to access terminal colors
 #include <windows.h> // to access terminal colors
-
 #include "Main.h"
 #include "UnableToOpenFileException.h"
 #include "InvalidInputException.h"
 
 using namespace std;
 
+// 1. Greet the player
 void greeting()
 {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -20,6 +21,7 @@ void greeting()
 	cout << " >>> COMP217 Midterm Exam - Centennial College - Atta Jirofty - 301151759 <<<" << endl << endl;
 }
 
+// 2. Ask for username and read the scores from file ( create user if does not exits )
 void findOrCreateUser(fstream& userFile, int& playerWins, int& computerWins, string& userName)
 {
 	cout << "Please Enter Your Username : ";
@@ -31,7 +33,7 @@ void findOrCreateUser(fstream& userFile, int& playerWins, int& computerWins, str
 	{
 		if (userFile.is_open())
 		{
-			// if exists, read 2 numbers : player wins AND computer wins
+			// if user exists, read 2 numbers : playerWins AND computerWins
 			userFile >> playerWins;
 			userFile >> computerWins;
 			cout << "Your Current Score is : " << playerWins << endl;
@@ -41,15 +43,16 @@ void findOrCreateUser(fstream& userFile, int& playerWins, int& computerWins, str
 		else
 		{
 			throw UnableToOpenFileException();
-			//cerr << "Unable to open File ! " << endl;
 		}
 	}
 }
 
+// 3. Ask player to choose an option and check the user input
 void playerAnswer(int& playerChoiceIndex, string& playerChoice, string  gameOptions[3])
 {
 	cout << "\n\nPlease Choose One of the Following :" << "\nEnter 1 for 'Rock' \nEnter 2 for 'Paper' \nEnter 3 for 'Scissors'" << endl;
 	cin >> playerChoiceIndex;
+
 	if (playerChoiceIndex <= 3 && playerChoiceIndex >= 1)
 	{
 		playerChoice = gameOptions[playerChoiceIndex - 1];
@@ -61,6 +64,7 @@ void playerAnswer(int& playerChoiceIndex, string& playerChoice, string  gameOpti
 	}
 }
 
+// 4. Determine the winner
 void winnerCheck(string& computerRandomChoice, string& playerChoice, int& playerWins, int& computerWins, bool& playerWinFlag, bool& computerWinFlag)
 {
 	if (computerRandomChoice == "Rock")
@@ -155,6 +159,7 @@ void winnerCheck(string& computerRandomChoice, string& playerChoice, int& player
 	}
 }
 
+// 5. Save the new scores for player in userName.txt file
 void saveScore(std::fstream& userFile, std::string& userName, int playerWins, int computerWins)
 {
 	userFile.open(userName + ".txt", fstream::out | fstream::trunc);
@@ -162,31 +167,21 @@ void saveScore(std::fstream& userFile, std::string& userName, int playerWins, in
 	userFile.close();
 }
 
-void farewell(int playerWins, int computerWins)
-{
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
-	cout << "\nYour Final Score is : " << playerWins << endl;
-	cout << "Computer's Final Score is : " << computerWins << endl << endl;
-	SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
-	cout << "User Data Successfully Saved. \nFarewell Muchacho ! \n\n" << endl;
-}
-
-
+// 6. Ask player if want to play again
 void repeatGame(std::string& playerAnsForGameEnd, int playerWins, int computerWins, int& retflag)
 {
 	retflag = 1;
+
 	cout << "Do you want to play again ? (Y/N)" << endl;
 	cin >> playerAnsForGameEnd;
+
 	if (playerAnsForGameEnd == "N" || playerAnsForGameEnd == "n")
 	{
-		//endGame = true;
 		farewell(playerWins, computerWins);
 		{ retflag = 2; return; };
 	}
 	else if (playerAnsForGameEnd == "Y" || playerAnsForGameEnd == "y")
 	{
-		//endGame = false;
 		{ retflag = 3; return; };
 	}
 	else
@@ -195,6 +190,21 @@ void repeatGame(std::string& playerAnsForGameEnd, int playerWins, int computerWi
 		throw InvalidInputException();
 	}
 }
+
+// 7. Show confirmation message
+void farewell(int playerWins, int computerWins)
+{
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+
+	cout << "\nYour Final Score is : " << playerWins << endl;
+	cout << "Computer's Final Score is : " << computerWins << endl << endl;
+
+	SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+
+	cout << "User Data Successfully Saved. \nFarewell Muchacho ! \n\n" << endl;
+}
+
 
 int main()
 {
@@ -219,41 +229,33 @@ int main()
 
 	greeting();
 
-	// 1. Search through files to find userName.txt
 	try
 	{
 		findOrCreateUser(userFile, playerWins, computerWins, userName);
-
 	}
 	catch (const UnableToOpenFileException& ex)
 	{
 		cerr << "Exception Occurred: " << ex.what() << endl << endl;
-		return -1;
 	}
 
 	while (!endGame)
 	{
-		// 3. Computer randomly pick R-P-S
+		// Computer randomly pick Rock-Paper-Scissors
 		string computerRandomChoice = gameOptions[rand() % 3];
 
-		// 4. Ask user to choose 1=R - 2=P - 3=S
 		try
 		{
 			playerAnswer(playerChoiceIndex, playerChoice, gameOptions);
-
 		}
 		catch (const InvalidInputException& ia)
 		{
 			cerr << "Exception Occurred: " << ia.what() << endl << endl;
 		}
 
-		// 5. See who won  ----  6. Display the game result to player
 		winnerCheck(computerRandomChoice, playerChoice, playerWins, computerWins, playerWinFlag, computerWinFlag);
 
-		// 7. Keep track of scores 
 		saveScore(userFile, userName, playerWins, computerWins);
 
-		// 8. Ask player if want to play again : Y - N 
 		try
 		{
 			int retflag;
@@ -265,7 +267,7 @@ int main()
 		{
 			cerr << "Exception Occurred: " << ia.what() << endl << endl;
 		}
-	} // if Y : Go to step 3
+	}
 
 	SetConsoleTextAttribute(hConsole, FOREGROUND_INTENSITY);
 	return 0;
