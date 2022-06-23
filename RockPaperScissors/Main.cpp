@@ -75,6 +75,8 @@ void winnerCheck(string& computerRandomChoice, string& playerChoice, int& player
 		{
 			//Draw
 			cout << "DRAW ! Try Again...\n\n" << endl;
+			playerWinFlag = false;
+			computerWinFlag = false;
 		}
 
 		else if (playerChoice == "Paper")
@@ -110,6 +112,8 @@ void winnerCheck(string& computerRandomChoice, string& playerChoice, int& player
 		{
 			// Draw
 			cout << "DRAW ! Try Again...\n\n" << endl;
+			playerWinFlag = false;
+			computerWinFlag = false;
 		}
 
 		else if (playerChoice == "Scissors")
@@ -145,6 +149,8 @@ void winnerCheck(string& computerRandomChoice, string& playerChoice, int& player
 		{
 			// Draw
 			cout << "DRAW ! Try Again...\n\n" << endl;
+			playerWinFlag = false;
+			computerWinFlag = false;
 		}
 
 	}
@@ -163,6 +169,13 @@ void winnerCheck(string& computerRandomChoice, string& playerChoice, int& player
 		SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE || BACKGROUND_RED);
 		cout << "\n\n>>>>>>>>>>   LOOSER   <<<<<<<<<< \nThis fight is not over...\n" << endl;
 
+		SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+		cout << "SCORES ===> Player:" << playerWins << "  Computer:" << computerWins << " <=== SCORES\n\n" << endl;
+	}
+	else
+	{
+		SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE || BACKGROUND_RED);
+		cout << "\n\nOh well, a draw ! \n" << endl;
 		SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
 		cout << "SCORES ===> Player:" << playerWins << "  Computer:" << computerWins << " <=== SCORES\n\n" << endl;
 	}
@@ -203,6 +216,7 @@ void repeatGame(std::string& playerAnsForGameEnd, int playerWins, int computerWi
 // 7. Show confirmation message
 void farewell(int playerWins, int computerWins)
 {
+	system("CLS");
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
 
@@ -247,8 +261,12 @@ int main()
 		cerr << "Exception Occurred: " << ex.what() << endl << endl;
 	}
 
-	while (!endGame)
+	while (true)
 	{
+		system("CLS");
+		SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
+		cout << "How you doin' " << userName << " ?" << "\n";
+
 		// Computer randomly pick Rock-Paper-Scissors
 		string computerRandomChoice = gameOptions[rand() % 3];
 
