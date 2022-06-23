@@ -29,29 +29,21 @@ int main()
 	{
 		if (userFile.is_open())
 		{
-		userFile >> playerWins;
-		userFile >> computerWins;
-		userFile.close();
-			
+			// if exists, read 2 numbers : player wins AND computer wins
+			userFile >> playerWins;
+			userFile >> computerWins;
+			userFile.close();	
 		}
 		else
 		{
 			cerr << "Unable to open File ! " << endl;
 		}
-	// if exists, read 2 numbers : player wins AND computer wins
-
-	}
-	else
-	{
-	// if not exists, create one
-
 	}
 
 	while (!endGame)
 	{
 		// 3. Computer randomly pick R-P-S
 		string computerRandomChoice = gameOptions[rand() % 3];
-		//cout << computerRandomChoice;
 
 		// 4. Ask user to choose 1=R - 2=P - 3=S
 		cout << "Please Choose One of the Following : 1=Rock  2=Paper  3=Scissors" << endl;
@@ -123,9 +115,6 @@ int main()
 			}
 		}
 
-
-
-
 		// 6. Display the game result to player
 		if (playerWinFlag)
 		{
@@ -137,29 +126,23 @@ int main()
 		}
 
 		// 7. Keep track of "wins by the player" and "wins by the computer" 
-		userFile.open(userName + ".txt", ios::out || fstream::trunc);
-		userFile << playerWins;
-		userFile << computerWins;
-
-		//userFile << userName;
+		userFile.open(userName + ".txt", ios::out);
+		userFile << playerWins << " " << computerWins;
 
 		// 8. Ask player if want to play again : Y - N 
-		cout << "Do you want to play again ? (1=Y / N=0)" << endl;
+		cout << "Do you want to play again ? (0=Y / 1=N)" << endl;
 		cin >> endGame;
 
-		// if Y : Go to step 3
+		// if N : continue to step 9
 		if (endGame)
 		{
-		// 9. save in userName.txt
+			// 9. save in userName.txt
 			userFile.close();
 			// 10. Privide confirmation msg to player
 			cout << "Your Score was saved successfully. See ya soon ! " << endl;
 			// 11. End the game
 			break;
 		}
-
-
-
-	} // if N : continue to step 9
+	} // if Y : Go to step 3
 	return 0;
 }
