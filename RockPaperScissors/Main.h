@@ -7,3 +7,5 @@ void findOrCreateUser(std::fstream& userFile, int& playerWins, int& computerWins
 void saveScore(std::fstream& userFile, std::string& userName, int playerWins, int computerWins);
 
 void farewell(int playerWins, int computerWins);
+
+void playerAnswer(int& playerChoiceIndex, std::string& playerChoice, std::string  gameOptions[3]);

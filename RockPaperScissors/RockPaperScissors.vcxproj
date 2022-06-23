@@ -130,7 +130,9 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="InvalidInputException.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="UnableToOpenFileException.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
