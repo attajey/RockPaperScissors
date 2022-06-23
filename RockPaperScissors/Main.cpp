@@ -11,6 +11,8 @@ int main()
 	string userName;
 	int playerWins;
 	int computerWins;
+	int playerChoiceIndex;
+	string playerChoice;
 	string gameOptions[] = { "Rock", "Paper", "Scissors" };
 	srand(time(NULL));
 
@@ -41,13 +43,69 @@ int main()
 
 	// 3. Computer randomly pick R-P-S
 	string computerRandomChoice = gameOptions[rand() % 3];
-	cout << computerRandomChoice;
+	//cout << computerRandomChoice;
 	
 
 
 	// 4. Ask user to choose 1=R - 2=P - 3=S
+	cout << "Please Choose One of the Following : 1=Rock  2=Paper  3=Scissors" << endl;
+	cin >> playerChoiceIndex;
+	playerChoice = gameOptions[playerChoiceIndex - 1];
+
+
+
 
 	// 5. See who won
+	if (computerRandomChoice == "Rock")
+	{
+		if (playerChoice == "Rock")
+		{
+		//Draw
+
+		}
+		else if (playerChoice == "Paper")
+		{
+			// Player Wins
+		}
+		else if (playerChoice == "Scissors")
+		{
+			// Computer Wins
+		}
+
+	}
+	else if (computerRandomChoice == "Paper")
+	{
+		if (playerChoice == "Rock")
+		{
+			// Computer Wins
+		}
+		else if (playerChoice == "Paper")
+		{
+			// Draw
+		}
+		else if (playerChoice == "Scissors")
+		{
+			// Player Wins
+		}
+	}
+	else if (computerRandomChoice == "Scissors")
+	{
+		if (playerChoice == "Rock")
+		{
+			// Player Wins
+		}
+		else if (playerChoice == "Paper")
+		{
+			// Computer Wins
+		}
+		else if (playerChoice == "Scissors")
+		{
+			// Draw
+		}
+	}
+	
+
+
 
 	// 6. Display the game result to player
 
