@@ -89,6 +89,15 @@ void winnerCheck(string& computerRandomChoice, string& playerChoice, int& player
 
 		}
 	}
+
+	if (playerWinFlag)
+	{
+		cout << "YOU HAVE WON !!! YEAYYYY" << endl;
+	}
+	else if (computerWinFlag)
+	{
+		cout << "L   LOOSER   L" << endl;
+	}
 }
 
 void findOrCreateUser(fstream& userFile, int& playerWins, int& computerWins)
@@ -111,8 +120,27 @@ void findOrCreateUser(fstream& userFile, int& playerWins, int& computerWins)
 	}
 }
 
+void saveScore(std::fstream& userFile, std::string& userName, int playerWins, int computerWins)
+{
+	userFile.open(userName + ".txt", fstream::out | fstream::trunc);
+	userFile << playerWins << " " << computerWins;
+	userFile.close();
+}
+
+void farewell(int playerWins, int computerWins)
+{
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);
+	cout << "\nYour Final Score is : " << playerWins << endl;
+	cout << "Computer's Final Score is : " << computerWins << endl << endl;
+	SetConsoleTextAttribute(hConsole, FOREGROUND_RED);
+	cout << "User Data Successfully Saved. \nFarewell Muchacho ! " << endl;
+}
+
 int main()
 {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
 	bool endGame = false;
 	bool playerWinFlag = false;
 	bool computerWinFlag = false;
@@ -124,6 +152,7 @@ int main()
 	string userName;
 	string playerChoice;
 	string gameOptions[] = { "Rock", "Paper", "Scissors" };
+	string playerAnsForGameEnd;
 
 	fstream userFile;
 
@@ -150,31 +179,28 @@ int main()
 		cout << computerRandomChoice << "***********" << endl;
 
 		// 4. Ask user to choose 1=R - 2=P - 3=S
-		cout << "Please Choose One of the Following : 1=Rock  2=Paper  3=Scissors" << endl;
+		cout << "Please Choose One of the Following :" << "\nEnter 1 for 'Rock' \nEnter 2 for 'Paper' \nEnter 3 for 'Scissors'" << endl;
 		cin >> playerChoiceIndex;
 		playerChoice = gameOptions[playerChoiceIndex - 1];
 
 		// 5. See who won
+		// 6. Display the game result to player
 		winnerCheck(computerRandomChoice, playerChoice, playerWins, computerWins, playerWinFlag, computerWinFlag);
 
-		// 6. Display the game result to player
-		if (playerWinFlag)
-		{
-			cout << "YOU HAVE WON !!! YEAYYYY" << endl;
-		}
-		else if (computerWinFlag)
-		{
-			cout << "L   LOOSER   L" << endl;
-		}
-
 		// 7. Keep track of "wins by the player" and "wins by the computer" 
-		userFile.open(userName + ".txt", fstream::out | fstream::trunc);
-		userFile << playerWins << " " << computerWins;
-		userFile.close();
+		saveScore(userFile, userName, playerWins, computerWins);
 
 		// 8. Ask player if want to play again : Y - N 
 		cout << "Do you want to play again ? (0=Y / 1=N)" << endl;
-		cin >> endGame;
+		cin >> playerAnsForGameEnd;
+		if (playerAnsForGameEnd == "N" || playerAnsForGameEnd == "n")
+		{
+			endGame = true;
+		}
+		else if (playerAnsForGameEnd == "Y" || playerAnsForGameEnd == "y")
+		{
+			endGame = false;
+		}
 
 		// if N : continue to step 9
 		if (endGame)
@@ -182,12 +208,11 @@ int main()
 			// 9. save in userName.txt
 			//userFile.close();
 			// 10. Privide confirmation msg to player
-			cout << "Your Final Current Score is : " << playerWins << endl;
-			cout << "Computer's Final Score is : " << computerWins << endl;
-			cout << "Your Score was saved successfully. See ya soon ! " << endl;
+			farewell(playerWins, computerWins);
 			// 11. End the game
 			break;
 		}
 	} // if Y : Go to step 3
+	SetConsoleTextAttribute(hConsole, FOREGROUND_INTENSITY);
 	return 0;
 }
