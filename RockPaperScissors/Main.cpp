@@ -36,8 +36,6 @@ void findOrCreateUser(fstream& userFile, int& playerWins, int& computerWins, str
 			// if user exists, read 2 numbers : playerWins AND computerWins
 			userFile >> playerWins;
 			userFile >> computerWins;
-			cout << "Your Current Score is : " << playerWins << endl;
-			cout << "Computer's Score is : " << computerWins << endl << endl;
 			userFile.close();
 		}
 		else
@@ -62,6 +60,16 @@ void playerAnswer(int& playerChoiceIndex, string& playerChoice, string  gameOpti
 		cin.clear();
 		throw InvalidInputException();
 	}
+}
+
+void userInfo(std::string& userName, int playerWins, int computerWins)
+{
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE | BACKGROUND_GREEN);
+
+	cout << "How you doin' " << userName << " ?" << "\n\n";
+	cout << "Your Current Score is : " << playerWins << endl;
+	cout << "Computer's Score is : " << computerWins << endl << endl;
 }
 
 // 4. Determine the winner
@@ -264,8 +272,8 @@ int main()
 	while (true)
 	{
 		system("CLS");
+		userInfo(userName, playerWins, computerWins);
 		SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN);
-		cout << "How you doin' " << userName << " ?" << "\n";
 
 		// Computer randomly pick Rock-Paper-Scissors
 		string computerRandomChoice = gameOptions[rand() % 3];
@@ -299,3 +307,4 @@ int main()
 	SetConsoleTextAttribute(hConsole, FOREGROUND_INTENSITY);
 	return 0;
 }
+
